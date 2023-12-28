@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import Container from "../../components/Container";
@@ -10,7 +12,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { auth } from "../../services/firebaseConnection";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "firebase/auth";
 
 const schema = z.object({
   name: z.string().min(1, "O campo é obrigatório!"),
@@ -27,6 +33,14 @@ const schema = z.object({
 export type FormData = z.infer<typeof schema>;
 
 function Register() {
+  useEffect(() => {
+    async function handleLogout() {
+      await signOut(auth);
+    }
+
+    handleLogout();
+  }, []);
+
   const navigate = useNavigate();
 
   const {

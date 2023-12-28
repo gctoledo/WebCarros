@@ -1,11 +1,11 @@
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
-import { FormData } from "../../pages/Login";
 
 type InputProps = {
   placeholder: string;
   type: string;
-  name: "email" | "password";
-  register: UseFormRegister<FormData>;
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<any>;
   error?: string;
   rules?: RegisterOptions;
 };

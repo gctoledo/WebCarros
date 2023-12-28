@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
@@ -8,6 +8,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { auth } from "../../services/firebaseConnection";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const schema = z.object({
   name: z.string().min(1, "O campo é obrigatório!"),
@@ -24,14 +27,27 @@ const schema = z.object({
 export type FormData = z.infer<typeof schema>;
 
 function Register() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema), mode: "onChange" });
 
-  const formSubmit = (data: FormData) => {
-    console.log(data);
+  const formSubmit = async (data: FormData) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (user) => {
+        await updateProfile(user.user, {
+          displayName: data.name,
+        });
+        console.log("CADASTRADO COM SUCESSO");
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((e) => {
+        console.log("ERRO AO CADASTRAR");
+        console.log(e);
+      });
   };
 
   return (
@@ -79,7 +95,7 @@ function Register() {
             type="submit"
             className="bg-zinc-900 w-full rounded-md text-white h-10 font-medium"
           >
-            Acessar
+            Cadastrar
           </button>
         </form>
 

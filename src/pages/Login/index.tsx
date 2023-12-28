@@ -38,7 +38,7 @@ function Login() {
         </Link>
 
         <form
-          className="bg-white max-w-xl w-full rounded-lg"
+          className="bg-white max-w-xl w-full rounded-lg p-4"
           onSubmit={handleSubmit(formSubmit)}
         >
           <div className="mb-3">
@@ -61,7 +61,12 @@ function Login() {
             />
           </div>
 
-          <button type="submit">Acessar</button>
+          <button
+            type="submit"
+            className="bg-zinc-900 w-full rounded-md text-white h-10 font-medium"
+          >
+            Acessar
+          </button>
         </form>
       </div>
     </Container>

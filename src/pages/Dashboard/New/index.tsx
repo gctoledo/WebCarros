@@ -1,4 +1,9 @@
-import { FiUpload } from "react-icons/fi";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChangeEvent, useState, useContext } from "react";
+
+import { AuthContext } from "../../../contexts/AuthContext";
+
+import { FiUpload, FiTrash } from "react-icons/fi";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,6 +12,16 @@ import Input from "../../../components/Input";
 
 import Container from "../../../components/Container";
 import DashboardHeader from "../../../components/DashboardHeader";
+
+import { v4 as uuidV4 } from "uuid";
+
+import { storage } from "../../../services/firebaseConnection";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const schema = z.object({
   name: z.string().min(1, "O campo nome é obrigatório!"),
@@ -26,7 +41,18 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+interface ImageProps {
+  uid: string;
+  name: string;
+  previewURL: string;
+  url: string;
+}
+
 function New() {
+  const [images, setImages] = useState<ImageProps[]>([]);
+
+  const { user } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -39,6 +65,56 @@ function New() {
 
   const onSubmit = (data: FormData) => {
     console.log(data);
+  };
+
+  const handleFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = event.target.files[0];
+
+      if (image.type === "image/jpeg" || image.type === "image/png") {
+        await handleUpload(image);
+      } else {
+        alert("Envie uma imagem jpeg ou png!");
+        return;
+      }
+    }
+  };
+
+  const handleUpload = async (image: File) => {
+    if (!user?.uid) {
+      return;
+    }
+
+    const currentUid = user.uid;
+    const uidImage = uuidV4();
+
+    const uploadRef = ref(storage, `images/${currentUid}/${uidImage}`);
+
+    uploadBytes(uploadRef, image).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        const imageItem: ImageProps = {
+          name: uidImage,
+          uid: currentUid,
+          previewURL: URL.createObjectURL(image),
+          url: downloadURL,
+        };
+
+        setImages((currentImages) => [...currentImages, imageItem]);
+      });
+    });
+  };
+
+  const handleDeleteImage = async (item: ImageProps) => {
+    const imagePath = `images/${item.uid}/${item.name}`;
+
+    const imageRef = ref(storage, imagePath);
+
+    try {
+      await deleteObject(imageRef);
+      setImages(images.filter((image) => image.url !== item.url));
+    } catch (e) {
+      console.log("Erro ao deletar");
+    }
   };
 
   return (
@@ -55,9 +131,29 @@ function New() {
               type="file"
               accept="image/*"
               className="opacity-0 cursor-pointer"
+              onChange={handleFile}
             />
           </div>
         </button>
+
+        {images.map((image) => (
+          <div
+            key={image.name}
+            className="w-full h-32 flex items-center justify-center relative"
+          >
+            <button
+              className="absolute"
+              onClick={() => handleDeleteImage(image)}
+            >
+              <FiTrash size={28} color="#fff" />
+            </button>
+            <img
+              src={image.previewURL}
+              className="rounded-lg w-full h-32 object-cover"
+              alt="Foto do carro"
+            />
+          </div>
+        ))}
       </div>
 
       <div className="w-ful bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2 mt-2">

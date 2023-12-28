@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, ReactNode } from "react";
 
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 import { Navigate } from "react-router-dom";
 

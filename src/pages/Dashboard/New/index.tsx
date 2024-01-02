@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, useState, useContext } from "react";
 
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -15,13 +14,14 @@ import DashboardHeader from "../../../components/DashboardHeader";
 
 import { v4 as uuidV4 } from "uuid";
 
-import { storage } from "../../../services/firebaseConnection";
+import { storage, db } from "../../../services/firebaseConnection";
 import {
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 const schema = z.object({
   name: z.string().min(1, "O campo nome é obrigatório!"),
@@ -64,7 +64,41 @@ function New() {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    if (images.length === 0) {
+      alert("Envia alguma imagem deste carro!");
+      return;
+    }
+
+    const carImageList = images.map((car) => {
+      return {
+        uid: car.uid,
+        name: car.name,
+        url: car.url,
+      };
+    });
+
+    addDoc(collection(db, "cars"), {
+      name: data.name,
+      model: data.model,
+      whatsapp: data.whatsapp,
+      city: data.city,
+      year: data.year,
+      km: data.km,
+      price: data.price,
+      description: data.description,
+      created: new Date(),
+      owner: user?.name,
+      uid: user?.uid,
+      images: carImageList,
+    })
+      .then(() => {
+        reset();
+        setImages([]);
+        console.log("CADASTRADO COM SUCESSO");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const handleFile = async (event: ChangeEvent<HTMLInputElement>) => {

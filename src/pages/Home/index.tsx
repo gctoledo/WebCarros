@@ -7,7 +7,7 @@ import Container from "../../components/Container";
 
 import { Link } from "react-router-dom";
 
-interface CarProps {
+export interface CarProps {
   id: string;
   year: string;
   name: string;
@@ -89,7 +89,7 @@ function Home() {
 
               <img
                 src={car.images[0].url}
-                alt="Carro"
+                alt={car.name}
                 className="w-full rounded-lg mb-2 max-h-72 hover:scale-105 transition-all"
                 onLoad={() => handleImageLoad(car.id)}
                 style={{

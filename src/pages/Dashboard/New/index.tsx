@@ -65,7 +65,7 @@ function New() {
 
   const onSubmit = (data: FormData) => {
     if (images.length === 0) {
-      alert("Envia alguma imagem deste carro!");
+      alert("Envie alguma imagem deste carro!");
       return;
     }
 

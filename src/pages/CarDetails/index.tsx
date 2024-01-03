@@ -12,6 +12,8 @@ import { CarProps } from "../Home";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
 interface CarDetailsProps extends CarProps {
   whatsapp: string;
   owner: string;
@@ -22,6 +24,8 @@ interface CarDetailsProps extends CarProps {
 
 function CarDetails() {
   const [car, setCar] = useState<CarDetailsProps>();
+
+  const [sliderPerView, setSliderPerView] = useState<number>(2);
 
   const { id } = useParams();
 
@@ -53,9 +57,41 @@ function CarDetails() {
     loadCar();
   }, [id]);
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 720) {
+        setSliderPerView(1);
+      } else {
+        setSliderPerView(2);
+      }
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Container>
-      <h1>Detalhes do carro</h1>
+      <Swiper
+        slidesPerView={sliderPerView}
+        pagination={{ clickable: true }}
+        navigation
+      >
+        {car?.images.map((image) => (
+          <SwiperSlide key={image.name}>
+            <img
+              src={image.url}
+              className="w-full h-96 object-cover"
+              alt={image.name}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       {car && (
         <main className="w-full bg-white rounded-lg p-6 my-4">

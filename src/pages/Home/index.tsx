@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 
 import { collection, query, getDocs, orderBy, where } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
@@ -62,7 +62,9 @@ function Home() {
     setLoadImages((prevImageLoaded) => [...prevImageLoaded, id]);
   };
 
-  const handleSearchCar = async () => {
+  const handleSearchCar = async (e: FormEvent) => {
+    e.preventDefault();
+
     if (input === "") {
       loadCars();
       return;
@@ -95,27 +97,28 @@ function Home() {
     });
 
     setCars(listCars);
-    setInput("");
   };
-
-  const string = "25.000";
-  console.log(Number(string));
 
   return (
     <Container>
-      <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
-        <input
-          placeholder="Digite o nome do carro"
-          className="w-full border-2 h-9 px-3 outline-none rounded-lg"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          className="bg-red-500 h-9 px-8 rounded-lg text-white font-medium text-lg"
-          onClick={handleSearchCar}
+      <section>
+        <form
+          onSubmit={(e) => handleSearchCar(e)}
+          className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2"
         >
-          Buscar
-        </button>
+          <input
+            placeholder="Digite o nome do carro"
+            className="w-full border-2 h-9 px-3 outline-none rounded-lg"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button
+            className="bg-red-500 h-9 px-8 rounded-lg text-white font-medium text-lg"
+            type="submit"
+          >
+            Buscar
+          </button>
+        </form>
       </section>
 
       <h1 className="font-bold text-center mt-6 text-2xl mb-4">

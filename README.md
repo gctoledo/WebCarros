@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+# WebCarros
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto de anuncios de veículos, podendo realizar cadastrado e fazer login, dando acesso ao Dashboard que terá disponível o formulário para cadastrar um anúncio novo de veículo.
 
-Currently, two official plugins are available:
+## 🔥 Introdução
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O projeto consiste em um site de anúncio de veículos, onde você pode cadastrar uma conta e fazer login, utilizando o sistema de autenticação por e-mail/senha do Firebase, e assim anunciar qualquer veículo, podendo fazer upload de imagens, onde tudo ficará salvo no banco de dados do Firebase (Firestore). O sistema de roteamento foi feito utilizando o React Router DOM, criando também rotas seguras para o dashboard, que só é acessível para usuários logados. O formulário de cadastro de veículos é gerenciado pelo React Hook Form, onde o schema com validações e máscara foi criado usando Zod. Para o gerenciamento de estados foi utilizado o próprio Context API, fornecido pelo React. A estilização dos componentes foram feitas através do Tailwind CSS.
 
-## Expanding the ESLint configuration
+### 🔨 Guia de instalação
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Para visualizar o projeto é necessário possuir o NodeJS instalado em sua máquina. Você pode fazer um clone do repositório e executar os seguintes comandos no terminal para visualizar o projeto:
 
-- Configure the top-level `parserOptions` property like this:
+Passo 1:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+npm i
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Passo 2:
+
+```
+npm run dev
+```
+
+## 📦 Tecnologias usadas:
+
+- ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+- ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+- ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+- ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
+- ![Context-API](https://img.shields.io/badge/Context--Api-000000?style=for-the-badge&logo=react)

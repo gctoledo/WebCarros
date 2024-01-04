@@ -20,6 +20,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 import { CarProps } from "../Home";
 
+import toast from "react-hot-toast";
+
 function Dashboard() {
   const [cars, setCars] = useState<CarProps[]>([]);
 
@@ -71,7 +73,7 @@ function Dashboard() {
         await deleteObject(imageRef);
         setCars(cars.filter((car) => car.id !== itemCar.id));
       } catch {
-        console.log("ERRO AO EXCLUIR A IMAGEM");
+        toast.error("ERRO AO EXCLUIR A IMAGEM");
       }
     });
   };

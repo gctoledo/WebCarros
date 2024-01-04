@@ -105,7 +105,10 @@ function Dashboard() {
               </span>
 
               <strong className="text-black font-bold mt-4">
-                R$ {car.price}
+                {Number(car.price).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
               </strong>
             </div>
 

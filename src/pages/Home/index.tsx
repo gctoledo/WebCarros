@@ -98,6 +98,9 @@ function Home() {
     setInput("");
   };
 
+  const string = "25.000";
+  console.log(Number(string));
+
   return (
     <Container>
       <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
@@ -146,7 +149,10 @@ function Home() {
                   Ano {car.year} | {car.km}km
                 </span>
                 <strong className="text-black font-medium text-xl">
-                  R${car.price}
+                  {Number(car.price).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </strong>
               </div>
 

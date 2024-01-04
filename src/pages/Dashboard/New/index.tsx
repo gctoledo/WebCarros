@@ -270,7 +270,7 @@ function New() {
               register={register}
               name="price"
               error={errors.price?.message}
-              placeholder="Ex: 69.900"
+              placeholder="Ex: 69900"
             />
           </div>
 

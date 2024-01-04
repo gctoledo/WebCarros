@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 
 import Container from "../../components/Container";
@@ -61,7 +60,7 @@ function CarDetails() {
     }
 
     loadCar();
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     function handleResize() {
